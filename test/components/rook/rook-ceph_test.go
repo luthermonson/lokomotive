@@ -18,11 +18,18 @@
 package rook
 
 import (
+	"context"
 	"fmt"
 	"testing"
+	"time"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/wait"
 
 	testutil "github.com/kinvolk/lokomotive/test/components/util"
 )
+
+const timeout = time.Minute * 8
 
 func TestRookCephDeployment(t *testing.T) {
 	namespace := "rook"
@@ -32,9 +39,6 @@ func TestRookCephDeployment(t *testing.T) {
 	}{
 		{"csi-cephfsplugin-provisioner"},
 		{"csi-rbdplugin-provisioner"},
-		{"rook-ceph-crashcollector-suraj-lk-cluster-storage-worker-0"},
-		{"rook-ceph-crashcollector-suraj-lk-cluster-storage-worker-1"},
-		{"rook-ceph-crashcollector-suraj-lk-cluster-storage-worker-2"},
 		{"rook-ceph-mgr-a"},
 		{"rook-ceph-mon-a"},
 		{"rook-ceph-mon-b"},
@@ -56,6 +60,44 @@ func TestRookCephDeployment(t *testing.T) {
 		t.Run(fmt.Sprintf("rook-ceph deployment:%s", test.deployment), func(t *testing.T) {
 			t.Parallel()
 			testutil.WaitForDeployment(t, client, namespace, test.deployment, testutil.RetryInterval, testutil.Timeout)
+		})
+	}
+}
+
+func TestRookCephCrashCollector(t *testing.T) {
+	namespace := "rook"
+	client := testutil.CreateKubeClient(t)
+	var testCases []string
+
+	if err := wait.PollImmediate(testutil.RetryInterval, testutil.Timeout, func() (done bool, err error) {
+		items, err := client.AppsV1().Deployments(namespace).List(context.TODO(), metav1.ListOptions{
+			LabelSelector: "crashcollector=crash",
+		})
+		if err != nil {
+			return false, fmt.Errorf("Listing crashcollector deployments: %w", err)
+		}
+
+		// If we get zero deployments listed that means, the pods are not up yet. It takes some time
+		// for them to be up. So we try listing them again.
+		if len(items.Items) == 0 {
+			t.Log("No deployments with label 'crashcollector=crash.")
+			return false, nil
+		}
+
+		for _, itm := range items.Items {
+			testCases = append(testCases, itm.Name)
+		}
+
+		return true, nil
+	}); err != nil {
+		t.Fatalf("Finding names of crashcollector deployments: %v", err)
+	}
+
+	for _, test := range testCases {
+		test := test
+		t.Run(fmt.Sprintf("rook-ceph crashcollector deployment:%s", test), func(t *testing.T) {
+			t.Parallel()
+			testutil.WaitForDeployment(t, client, namespace, test, testutil.RetryInterval, testutil.Timeout)
 		})
 	}
 }
