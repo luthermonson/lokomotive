@@ -1,3 +1,259 @@
+## v0.5.0 - 2020-10-23
+
+We're happy to announce the release of Lokomotive v0.5.0 (Eurostar).
+
+This release packs new features, bug fixes, code optimizations, platform updates, security hardening, and much more.
+
+### Changes in v0.5.0
+
+#### Kubernetes updates
+
+- Kubernetes version has been updated to
+  [`v1.19.3`](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.19.md#v1193)
+  ([#1030](https://github.com/kinvolk/lokomotive/pull/1030)).
+
+#### Platform updates
+
+##### AKS
+
+- Kubernetes version has been updated to `1.18.8`
+  ([#1071](https://github.com/kinvolk/lokomotive/pull/1071)).
+
+##### Baremetal
+
+- Expose CNI MTU on the baremetal platform
+  ([#977](https://github.com/kinvolk/lokomotive/pull/977)).
+
+#### New components
+
+- Component `web-ui`
+  ([#981](https://github.com/kinvolk/lokomotive/pull/981)),
+  ([#1100](https://github.com/kinvolk/lokomotive/pull/1100))
+  from [headlamp](https://github.com/kinvolk/headlamp).
+- Component `inspektor-gadget`
+  ([#1076](https://github.com/kinvolk/lokomotive/pull/1076))
+  from [inspektor-gadget](https://github.com/kinvolk/inspektor-gadget/).
+
+#### Component updates
+
+- Update Velero component for Packet (OpenEBS and restic plugin support)
+  ([#881](https://github.com/kinvolk/lokomotive/pull/881)).
+- istio-operator: Update to 1.7.3
+  ([#1086](https://github.com/kinvolk/lokomotive/pull/1086)).
+- prometheus-operator: Update grafana, kube-state-metrics and node_exporter
+  ([#963](https://github.com/kinvolk/lokomotive/pull/963)).
+- cert-manager: Update to 1.0.3
+  ([#1114](https://github.com/kinvolk/lokomotive/pull/1114)).
+
+#### Terraform updates
+
+- Upgrade to Terraform 0.13
+  ([#824](https://github.com/kinvolk/lokomotive/pull/824)).
+
+#### Features
+
+- Encryption support to in-cluster pod traffic
+  ([#911](https://github.com/kinvolk/lokomotive/pull/911)).
+- AWS, Packet, Baremetal: use Docker instead of rkt for host containers
+  ([#946](https://github.com/kinvolk/lokomotive/pull/946)).
+- Change labels and taints format from string to structured
+  ([#1042](https://github.com/kinvolk/lokomotive/pull/1042)).
+- prometheus-operator: Add external_url
+  ([#964](https://github.com/kinvolk/lokomotive/pull/964)).
+
+#### Docs
+
+- Concept document for admission webhook
+  ([#943](https://github.com/kinvolk/lokomotive/pull/943)).
+- Coding style guide
+  ([#953](https://github.com/kinvolk/lokomotive/pull/953)).
+- Metallb: Clarify address_pools knob
+  ([#996](https://github.com/kinvolk/lokomotive/pull/996)).
+- How to guide on backing up and restoring rook-ceph volumes with Velero
+  ([#1048](https://github.com/kinvolk/lokomotive/pull/1048)).
+
+#### Bug fixes
+
+- bootkube: feed output using local rather than local_file content
+  ([#1021](https://github.com/kinvolk/lokomotive/pull/1021)).
+- Dex: fix pod reload on config change
+  ([#1040](https://github.com/kinvolk/lokomotive/pull/1040)).
+- Metallb: Add missing autodiscovery labels
+  ([#990](https://github.com/kinvolk/lokomotive/pull/990)).
+- Gangway: add a ServiceAccount
+  ([#1104](https://github.com/kinvolk/lokomotive/pull/1104)).
+- If there is more than one component installed in single namespace, `lokoctl` will now refuse to remove then namespace while running `lokoctl component --delete` with `--delete-namespace` flag ([#1093](https://github.com/kinvolk/lokomotive/pull/1093)).
+
+#### Development
+
+- Fixed error capitalization
+  ([#979](https://github.com/kinvolk/lokomotive/pull/979)).
+- pkg/terraform: unexport functions not used outside of package
+  ([#984](https://github.com/kinvolk/lokomotive/pull/984)).
+- pkg/components: remove unused List() function
+  ([#982](https://github.com/kinvolk/lokomotive/pull/982)).
+- docs/rook-ceph-storage: Use correct apply command
+  ([#1026](https://github.com/kinvolk/lokomotive/pull/1026)).
+- pkg/asssets/assets_generate: Fix copyright
+  ([#1020](https://github.com/kinvolk/lokomotive/pull/1020)).
+- Cleanup Terraform providers before Terraform 0.13 upgrades
+  ([#860](https://github.com/kinvolk/lokomotive/pull/860)).
+- kubelet e2e: Enable the disruptive test
+  ([#1012](https://github.com/kinvolk/lokomotive/pull/1012)).
+- .golangci.yml: Re-enable linters
+  ([#1029](https://github.com/kinvolk/lokomotive/pull/1029)).
+- Fix scripts/find-updates.sh
+  ([#1034](https://github.com/kinvolk/lokomotive/pull/1034)),
+  ([#1068](https://github.com/kinvolk/lokomotive/pull/1068)),
+  ([#1080](https://github.com/kinvolk/lokomotive/pull/1080)).
+- pkg/terraform: improvements
+  ([#1027](https://github.com/kinvolk/lokomotive/pull/1027)).
+- cli/cmd: cleanups part 1
+  ([#1013](https://github.com/kinvolk/lokomotive/pull/1013)).
+- test/components/kubernetes: remove kubelet pod when testing node labels
+  ([#1052](https://github.com/kinvolk/lokomotive/pull/1052)).
+- Remove usage of template_file
+  ([#1046](https://github.com/kinvolk/lokomotive/pull/1046)).
+- test/*: de-duplicate value timeout and retryInterval
+  ([#1049](https://github.com/kinvolk/lokomotive/pull/1049)).
+- Packet: Read BGP peer address from metadata service
+  ([#1010](https://github.com/kinvolk/lokomotive/pull/1010)).
+- pkg/assets: cleanup exported API
+  ([#936](https://github.com/kinvolk/lokomotive/pull/936)).
+- Cobra upgrade to v1.1.1
+  ([#1082](https://github.com/kinvolk/lokomotive/pull/1082)),
+  ([#1091](https://github.com/kinvolk/lokomotive/pull/1091)).
+- cli/cmd: cleanups part 2
+  ([#1015](https://github.com/kinvolk/lokomotive/pull/1015)).
+- Add github actions
+  ([#1074](https://github.com/kinvolk/lokomotive/pull/1074)).
+- Makefile: use latest Go when building in Docker
+  ([#1083](https://github.com/kinvolk/lokomotive/pull/1083)).
+- cli/cmd: cleanups part 3
+  ([#1018](https://github.com/kinvolk/lokomotive/pull/1018)).
+- Add new CI config for Packet based FLUO testing
+  ([#1110](https://github.com/kinvolk/lokomotive/pull/1110)).
+
+### Upgrading from v0.4.1
+
+#### Configuration syntax changes
+
+There have been some minor changes to the configurations of worker nodes, `labels` and `taints` format changed from `string` to `map(string)` for AWS and Packet platform.
+
+##### old:
+
+```
+labels = "testing=true"
+
+taints = "nodeType=storage:NoSchedule"
+```
+
+##### new:
+
+```
+labels = {
+  "testing" = "true"
+}
+
+taints = {
+  "nodeType" = "storage:NoSchedule"
+}
+```
+
+#### Cluster upgrade steps
+
+Due to [Terraform](https://github.com/kinvolk/lokomotive/pull/824) and [Kubernetes](https://github.com/kinvolk/lokomotive/pull/1030) upgrades to v0.13+ and v1.19.3 respectively, there are some additional steps that you need to follow. Go to your cluster's directory and follow these steps:
+
+
+1. Upgrade local Terraform binary to version v0.13.X. You can follow the [following guide](https://learn.hashicorp.com/tutorials/terraform/install-cli.) to do that.
+
+2. Export your platform name and assets directory name used in your platform configuration. It will be used in next steps:
+  ```sh
+  export PLATFORM="packet" && export ASSETS_DIR="assets"
+  ``` 
+
+3. Remove old asset files:
+  ```sh
+  rm $ASSETS_DIR/terraform-modules/$PLATFORM/flatcar-linux/kubernetes/require.tf \
+  $ASSETS_DIR/terraform-modules/$PLATFORM/flatcar-linux/kubernetes/workers/require.tf \
+  $ASSETS_DIR/terraform-modules/dns/route53/require.tf 2> /dev/null
+  ```
+
+4. Go to terraform directory:
+  ```sh
+  cd $ASSETS_DIR/terraform
+  ```
+
+5. Replace old providers:
+  ```sh
+  terraform state replace-provider -auto-approve registry.terraform.io/-/ct registry.terraform.io/poseidon/ct && \
+  terraform state replace-provider -auto-approve registry.terraform.io/-/template registry.terraform.io/hashicorp/template
+  ```
+
+6. **NOTE:** delete old ReplicaSet `kube-apiserver` only for single node cluster.
+  ```sh
+  kubectl delete rs $(kubectl get rs -n kube-system -l k8s-app=kube-apiserver --no-headers=true  | sort -k5 -h | head -n +2 | awk '{print $1}')
+  ```
+
+7. FelixConfiguration to be managed by Helm:
+  ```sh
+  kubectl label FelixConfiguration default app.kubernetes.io/managed-by=Helm && \
+  kubectl annotate FelixConfiguration default meta.helm.sh/release-name=calico && \
+  kubectl annotate FelixConfiguration default meta.helm.sh/release-namespace=kube-system
+  ```
+
+Finally, run:
+
+```sh
+lokoctl cluster apply --skip-components -v
+```
+
+The update process typically takes about 10 minutes.
+After the update, running `lokoctl health` should result in an output similar to the following:
+
+```sh
+Node                     Ready    Reason          Message
+
+lokomotive-controller-0  True     KubeletReady    kubelet is posting ready status
+lokomotive-1-worker-0    True     KubeletReady    kubelet is posting ready status
+lokomotive-1-worker-1    True     KubeletReady    kubelet is posting ready status
+lokomotive-1-worker-2    True     KubeletReady    kubelet is posting ready status
+Name      Status    Message              Error
+
+etcd-0    True      {"health":"true"}
+```
+
+#### Cluster nodes component upgrade (optional)
+
+- Manually upgrade etcd following the steps mentioned in the doc
+  [here](https://github.com/kinvolk/lokomotive/blob/v0.5.0/docs/how-to-guides/upgrade-etcd.md).
+- Manually upgrade the kubelet running on the nodes, by following the steps mentioned in the doc
+  [here](https://github.com/kinvolk/lokomotive/blob/v0.5.0/docs/how-to-guides/upgrade-bootstrap-kubelet.md).
+
+#### cert-manager Upgrade steps
+
+These steps are curated from the upgrade doc provided by [cert-manager](https://cert-manager.io/docs/installation/upgrading/upgrading-0.16-1.0/#kubernetes-1-16-and-above):
+
+Apply manifest:
+
+  ```sh
+  kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.3/cert-manager.yaml
+  ```
+
+Now it is safe to update:
+
+```
+lokoctl component apply cert-manager
+```
+
+#### Upgrade other components
+
+Other components are safe to upgrade by running the following command:
+
+```
+lokoctl component apply <component name>
+```
+
 ## v0.4.1 - 2020-09-15
 
 This is a patch release which includes mainly bug fixes.
